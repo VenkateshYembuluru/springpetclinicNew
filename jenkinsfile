@@ -1,0 +1,46 @@
+/** Scripted Pipeline script exmaple**/
+node('MAVEN'){
+    stage('SCM'){
+        git 'https://github.com/VenkateshYembuluru/springpetclinicNew.git'
+        
+        if (env.BRANCH_NAME == 'master') {
+            echo 'I only execute on the master branch'
+        } else {
+            echo 'I execute elsewhere'
+        }
+    }
+    stage('BUILD'){
+        sh 'mvn clean package'
+    }
+    stage('archival'){
+        archive 'target/*.war',
+        test reporte 'target/surefire-reports/*.xml'
+    }
+}
+/**Declarative pipeline exmaple**/
+/*pipeline{
+    agent{
+        lable 'MAVEN'
+    }
+    stages{
+        stage('SCM'){
+             git url: 'https://github.com/VenkateshYembuluru/springpetclinicNew.git', branch: 'master'
+        }
+        stage('BUILD'){
+            sh: 'mvn clean package', label: 'build'
+        }
+        stage('rchive the artifacts'){
+           archiveArtifacts  archive: 'gameoflife-web/target/*.war', onlyIfSuccessful: true
+        }
+    }
+    parameters {
+        string(name: 'learning' )
+    }
+    stages {
+        stage('test') {
+            steps {
+                echo '${params.learning} is the parameter'
+            }
+        }
+    }
+}*/

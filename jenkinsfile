@@ -13,7 +13,7 @@ node('MAVEN'){
         sh 'mvn clean package'
     }
     stage('Ansible run '){
-        sh 'ansible-playbook -i hosts tree-playbook.yml'
+        sh 'ansible-playbook -i hosts springpetclinic.yml'
     }
 }
 /**Declarative pipeline exmaple**/

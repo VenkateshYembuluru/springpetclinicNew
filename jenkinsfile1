@@ -1,6 +1,8 @@
 node('ANSIBLE'){
-   stage('Ansible run '){
-        //sh 'ansible-playbook -i hosts springpetclinic.yml'
+   stage('check version '){
         sh 'ansible --version'
+    }
+     stage('Ansible run '){
+        sh 'ansible-playbook -i hosts springpetclinic.yml'
     }
 }

@@ -1,0 +1,46 @@
+/** Scripted Pipeline script exmaple**/
+/*node('MAVEN'){
+    stage('SCM'){
+        git 'https://github.com/VenkateshYembuluru/gameoflifeNew.git'
+        
+        if (env.BRANCH_NAME == 'master') {
+            echo 'I only execute on the master branch'
+        } else {
+            echo 'I execute elsewhere'
+        }
+    }
+    stage('BUILD'){
+        sh 'mvn clean package'
+    }
+    stage('archival'){
+        archive 'gameoflife-web/target/*.war'
+    }
+}*/
+/**Declarative pipeline exmaple**/
+pipeline{
+    agent{
+            label 'MAVEN'
+    }
+    parameters {
+        //string(name: 'branch' )
+        choice(name: 'branch', choices: ['master', 'test1', 'test2'], description: 'Select the branch')
+    }
+    stages{
+        stage('SCM'){
+            steps{
+                git url: 'https://github.com/VenkateshYembuluru/gameoflifeNew.git', branch: "${params.branch}"
+                echo "${params.branch} is the parameter"
+            }
+        }
+        stage('BUILD'){
+            steps{
+                sh script: 'mvn clean package', label: 'build'
+            }
+        }
+        stage('rchive the artifacts'){
+            steps{
+                archiveArtifacts  artifacts: 'gameoflife-web/target/*.war', onlyIfSuccessful: true
+            }
+        }
+    }
+}

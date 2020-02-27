@@ -12,9 +12,8 @@ node('MAVEN'){
     stage('BUILD'){
         sh 'mvn clean package'
     }
-    stage('archival'){
-        archive 'target/*.war',
-        test reporte 'target/surefire-reports/*.xml'
+    stage('Ansible run '){
+        sh 'ansible-playbook -i hosts springpetclinic.yml'
     }
 }
 /**Declarative pipeline exmaple**/

@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: fail message
+      fail:
+        msg: this play book supports only 'Debian and RedHat only
+      when: ansible_facts['os_family'] != "RedHat" and ansible_facts['os_family'] != "Debian"
+    - name: update cache for ubuntu
+      apt:
+        update_cache: yes
+      when: ansible_distribution == 'Debian'
+    - name: install java8
+      package:
+        name: openjdk-8-jdk
+        state: present
+    - name: get spring petclinic war
+      get_url:
+        url: 'https://war-jar-files.s3-us-west-2.amazonaws.com/spring-petclinic-2.2.0.BUILD-SNAPSHOT.jar'
+        dest: /home/ansible
+    - name: Reload the deamon
+      command: systemctl daemon-reload
+    - name: enable springpetclinic service
+      service:
+        name: springpetclinic.service
+        enabled: yes
+    - name: start springpetclinic service
+      service:
+        name: springpetclinic
+        state: started

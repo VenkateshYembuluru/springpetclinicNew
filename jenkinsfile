@@ -1,6 +1,6 @@
 /** Scripted Pipeline script exmaple**/
-node('ANSIBLE'){
-   /* stage('SCM'){
+node('MAVEN'){
+    stage('SCM'){
         git 'https://github.com/VenkateshYembuluru/springpetclinicNew.git'
         
         if (env.BRANCH_NAME == 'master') {
@@ -11,9 +11,9 @@ node('ANSIBLE'){
     }
     stage('BUILD'){
         sh 'mvn clean package'
-    }*/
+    }
     stage('Ansible run '){
-        sh 'ansible-playbook -i hosts springpetclinic.yml'
+        sh 'ansible-playbook -i hosts tree-playbook.yml'
     }
 }
 /**Declarative pipeline exmaple**/
